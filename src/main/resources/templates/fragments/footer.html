@@ -1,0 +1,3 @@
+<footer th:fragment="footer" style="color:#ffffff; background-color: red">
+    <p th:text="${'실습 수행: ' + #temporals.format(#temporals.createNow(), 'yyyy-MM-dd HH:mm:ss')}"></p>
+</footer>
