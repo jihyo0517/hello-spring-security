@@ -4,6 +4,8 @@ import kr.ac.hansung.dto.ProductDto;
 import kr.ac.hansung.entity.Product;
 import kr.ac.hansung.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,7 +14,17 @@ import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class ProductService {
+    // 전체 목록 페이징
+    public Page<Product> getProducts(Pageable pageable){
+        return productRepository.findAll(pageable);
+    }
+
+    // 키워드 검색 + 페이징
+    public Page<Product> searchProducts(String keyword, Pageable pageable){
+        return productRepository.findByNameContaining(keyword, pageable);
+    }
 
     private final ProductRepository productRepository;
 
