@@ -48,6 +48,20 @@ public class ProductService {
     }
 
     @Transactional
+    public Product updateProduct(Long id, ProductDto dto) {
+        Product product = productRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("상품을 찾을 수 없습니다.: " + id));
+        // 영속상태(managed) 엔티티 필드 변경
+        // → @Transactional 종료 시 더티 체킹(Dirty Checking)으로 자동 UPDATE
+        product.setName(dto.getName());
+        product.setPrice(dto.getPrice());
+        product.setStock(dto.getStock());
+        if (dto.getDescription() != null) {
+            product.setDescription(dto.getDescription());
+        }
+        return product;  // save() 불필요 — 더티 체킹으로 자동 저장
+    }
+
+    @Transactional
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
